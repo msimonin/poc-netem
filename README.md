@@ -12,8 +12,8 @@ ansible-playbook -i inventory.generated test.yml
 
 `delays` subdirectory contains the validation results.
 
-``
-`─$ ls -l delays
+```
+─$ ls -l delays
 total 88
 -rw-r--r--  1 msimonin  staff  791  7 déc 23:49 netem0
 -rw-r--r--  1 msimonin  staff  829  7 déc 23:49 netem1
