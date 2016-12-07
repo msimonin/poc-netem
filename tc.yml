@@ -1,0 +1,13 @@
+---
+# args = [[index, {rule}]]
+- name: debugging tc rule
+  debug: var=args
+
+- name: Add rate limit
+  command: "tc class add dev eth0 parent 1: classid 1:{{ (args.0 + 1) * 10  }} htb rate {{ args.1.rate }}"
+
+- name: Adding delay
+  command: "tc qdisc add dev eth0 parent 1:{{ (args.0 + 1) * 10 }} handle {{ (args.0 + 1)*10 }}: netem delay {{ args.1.delay }}"
+
+- name: Adding filter
+  command: "tc filter add dev eth0  parent 1: protocol ip  u32 match ip dst {{ args.1.target }} flowid 1:{{ (args.0 + 1) * 10 }}"

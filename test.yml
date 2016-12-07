@@ -1,0 +1,22 @@
+---
+- hosts: test
+  become: true
+  tasks:
+    - name: Installing fping
+      apt: 
+       name: fping
+       update_cache: true
+
+    - name: Uploading the host list
+      template: 
+        src: hosts.j2
+        dest: /tmp/hosts
+    
+    - name: Get the latencies between all the nodes
+      shell: "fping -C 5 -q -s -e -f /tmp/hosts 2>/tmp/result"
+
+    - name: Fetching the results
+      fetch:
+        src: /tmp/result
+        dest: delays/{{ inventory_hostname }}
+        flat: yes
