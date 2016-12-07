@@ -1,20 +1,30 @@
 ---
 - hosts: test
   become: true
-  - name: The constraint to apply
-    debug: var=item
-    with_indexed_items: "{{ tc }}"
-    when:
-      - item[1].source == ansible_eth0["ipv4"]["address"]
-
+  tasks:
   - name: Removing root qdisc
     shell: "tc qdisc del dev eth0 root || true"
 
   - name: Preparing htf
     shell: "tc qdisc add dev eth0 root handle 1: htb"
 
-  - name: Apply traffic control constraint
-    include: tc.yml args={{ item }}
+  - name: Add rate limit
+    command: "tc class add dev eth0 parent 1: classid 1:{{ (item.0 + 1) * 10  }} htb rate {{ item.1.rate }}"
     with_indexed_items: "{{ tc }}"
     when:
       - item[1].source == ansible_eth0["ipv4"]["address"]
+
+
+  - name: Adding delay
+    command: "tc qdisc add dev eth0 parent 1:{{ (item.0 + 1) * 10 }} handle {{ (item.0 + 1)*10 }}: netem delay {{ item.1.delay }}"
+    with_indexed_items: "{{ tc }}"
+    when:
+      - item[1].source == ansible_eth0["ipv4"]["address"]
+
+
+  - name: Adding filter
+    command: "tc filter add dev eth0  parent 1: protocol ip  u32 match ip dst {{ item.1.target }} flowid 1:{{ (item.0 + 1) * 10 }}"
+    with_indexed_items: "{{ tc }}"
+    when:
+      - item[1].source == ansible_eth0["ipv4"]["address"]
+
