@@ -56,3 +56,7 @@ total 88
  960 ms (max round trip time)
         4.751 sec (elapsed real time)
 ```
+
+Example of latencies between the nodes.
+
+![latencies](example_latencies.png)
