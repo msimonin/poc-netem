@@ -43,7 +43,6 @@ plt_z[y, x] = z
 plt_y = np.arange(plt_z.shape[0])
 plt_x = np.arange(plt_z.shape[1])
 print(plt_z)
-plt.subplot(2, 2, 1)
 plt.pcolor(plt_x, plt_y, plt_z, cmap='RdBu', vmin=0, vmax=1000)
 plt.title('Observed latencies')
 # set the limits of the plot to the limits of the data
