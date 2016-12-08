@@ -18,12 +18,12 @@ Vagrant.configure(2) do |config|
           # project id must be unique accross all
           # your projects using vagrant-g5k to avoid conflict
           # on vm disks
-          g5k.project_id = "test-vagrant-g5k"
+          g5k.project_id = "poc-netem"
           #g5k.site = "igrida"
           g5k.site = "rennes"
           g5k.username = "msimonin"
           g5k.gateway = "access.grid5000.fr"
-          g5k.walltime = "03:00:00"
+          g5k.walltime = "01:00:00"
 
           # Image backed on the frontend filesystem
           g5k.image = {

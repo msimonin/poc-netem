@@ -18,5 +18,5 @@
     - name: Fetching the results
       fetch:
         src: /tmp/result
-        dest: delays/{{ inventory_hostname }}
+        dest: delays/{{ ansible_eth0["ipv4"]["address"] }}.out
         flat: yes
